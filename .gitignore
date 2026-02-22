@@ -1,0 +1,69 @@
+# Python / Backend
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg-info/
+dist/
+build/
+*.egg
+.eggs/
+
+# Wirtualne środowisko
+venv/
+env/
+.venv/
+
+# Pytest
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+*.cover
+
+# Baza testowa SQLite
+*.db
+test.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Zmienne środowiskowe
+.env
+.env.local
+.env.production
+
+# ============================================
+# Node.js / Frontend
+# ============================================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Angular build
+frontend/dist/
+frontend/.angular/
+frontend/coverage/
+
+# ============================================
+# Docker
+# ============================================
+# Nie ignorujemy Dockerfile ani docker-compose.yml!
+
+# ============================================
+# System operacyjny
+# ============================================
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================
+# Logi
+# ============================================
+*.log
+logs/
