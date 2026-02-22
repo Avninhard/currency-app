@@ -1,4 +1,3 @@
-# backend/app/services/nbp_service.py
 """Serwis do komunikacji z API Narodowego Banku Polskiego."""
 
 import httpx
