@@ -1,1 +1,97 @@
-<p>currency-table works!</p>
+<div class="card">
+  <div class="card-header">
+    <h2>📋 Kursy walut</h2>
+    <span class="badge badge-blue">{{ totalRecords }} rekordów</span>
+  </div>
+  <!-- Pusta tabela -->
+  <div *ngIf="currencies.length === 0" class="empty-state">
+    <p>📭 Brak danych do wyświetlenia</p>
+    <p class="empty-hint">Pobierz kursy z API NBP lub zmień filtry wyszukiwania</p>
+  </div>
+
+  <!-- Tabela z danymi -->
+  <div *ngIf="currencies.length > 0" class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Kod waluty</th>
+          <th>Nazwa waluty</th>
+          <th>Kurs średni</th>
+          <th>Nr tabeli</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let currency of currencies">
+          <td>
+            <strong>{{ currency.rate_date }}</strong>
+          </td>
+          <td>
+            <span class="currency-code">{{ currency.currency_code }}</span>
+          </td>
+          <td>{{ currency.currency_name }}</td>
+          <td [ngClass]="getRateClass(currency.mid_rate)">
+            <strong>{{ currency.mid_rate | number:'1.4-6' }}</strong> PLN
+          </td>
+          <td class="table-number">{{ currency.table_number || '-' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Paginacja -->
+  <div *ngIf="totalPages > 1" class="pagination">
+    <div class="pagination-info">
+      Strona {{ currentPage }} z {{ totalPages }}
+      ({{ totalRecords }} rekordów)
+    </div>
+
+    <div class="pagination-controls">
+      <!-- Pierwsza strona -->
+      <button
+        class="btn btn-sm btn-secondary"
+        (click)="goToPage(1)"
+        [disabled]="currentPage === 1"
+        title="Pierwsza strona">
+        «
+      </button>
+
+      <!-- Poprzednia -->
+      <button
+        class="btn btn-sm btn-secondary"
+        (click)="previousPage()"
+        [disabled]="currentPage === 1"
+        title="Poprzednia strona">
+        ‹
+      </button>
+
+      <!-- Numery stron -->
+      <button
+        *ngFor="let page of getPageNumbers()"
+        class="btn btn-sm"
+        [class.btn-primary]="page === currentPage"
+        [class.btn-secondary]="page !== currentPage"
+        (click)="goToPage(page)">
+        {{ page }}
+      </button>
+
+      <!-- Następna -->
+      <button
+        class="btn btn-sm btn-secondary"
+        (click)="nextPage()"
+        [disabled]="currentPage === totalPages"
+        title="Następna strona">
+        ›
+      </button>
+
+      <!-- Ostatnia strona -->
+      <button
+        class="btn btn-sm btn-secondary"
+        (click)="goToPage(totalPages)"
+        [disabled]="currentPage === totalPages"
+        title="Ostatnia strona">
+        »
+      </button>
+    </div>
+  </div>
+</div>

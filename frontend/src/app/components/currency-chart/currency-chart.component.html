@@ -1,1 +1,42 @@
-<p>currency-chart works!</p>
+<div class="card">
+  <div class="card-header">
+    <h2>📈 Wykres kursów walut</h2>
+  </div>
+
+  <!-- Brak danych -->
+  <div *ngIf="!hasData()" class="empty-state">
+    <p>📊 Brak danych do wyświetlenia na wykresie</p>
+    <p class="empty-hint">Wybierz walutę i grupowanie, aby zobaczyć wykres</p>
+  </div>
+
+  <!-- Wykres -->
+  <div *ngIf="hasData()" class="chart-wrapper">
+    <div class="chart-container">
+      <canvas #chartCanvas></canvas>
+    </div>
+
+    <!-- Statystyki -->
+    <div *ngIf="getStats() as stats" class="chart-stats">
+      <div class="stat-item">
+        <span class="stat-label">Średnia</span>
+        <span class="stat-value">{{ stats.avg | number:'1.4-4' }} PLN</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Minimum</span>
+        <span class="stat-value stat-min">{{ stats.min | number:'1.4-4' }} PLN</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Maksimum</span>
+        <span class="stat-value stat-max">{{ stats.max | number:'1.4-4' }} PLN</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Rozpiętość</span>
+        <span class="stat-value">{{ (stats.max - stats.min) | number:'1.4-4' }} PLN</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-label">Notowań</span>
+        <span class="stat-value">{{ stats.count }}</span>
+      </div>
+    </div>
+  </div>
+</div>

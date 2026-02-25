@@ -1,1 +1,132 @@
-<p>currency-filter works!</p>
+<div class="card filter-card">
+  <!-- NAGŁÓWEK FILTRÓW -->
+  <div class="card-header">
+    <h2>🔍 Filtry i pobieranie danych</h2>
+    <div class="header-buttons">
+      <button
+        class="btn btn-sm"
+        [class.btn-primary]="showFetchPanel"
+        [class.btn-secondary]="!showFetchPanel"
+        (click)="toggleFetchPanel()">
+        {{ showFetchPanel ? '✕ Zamknij panel NBP' : '⬇️ Pobierz z NBP' }}
+      </button>
+    </div>
+  </div>
+
+  <!-- PANEL POBIERANIA Z NBP -->
+  <div *ngIf="showFetchPanel" class="fetch-panel">
+    <h3>Pobierz kursy z API NBP</h3>
+    <div class="fetch-form">
+      <div class="form-group">
+        <label for="fetchDateFrom">Data od</label>
+        <input
+          type="date"
+          id="fetchDateFrom"
+          class="form-control"
+          [(ngModel)]="fetchDateFrom">
+      </div>
+
+      <div class="form-group">
+        <label for="fetchDateTo">Data do</label>
+        <input
+          type="date"
+          id="fetchDateTo"
+          class="form-control"
+          [(ngModel)]="fetchDateTo">
+      </div>
+
+      <div class="form-group">
+        <label for="fetchTable">Tabela</label>
+        <select
+          id="fetchTable"
+          class="form-control"
+          [(ngModel)]="fetchTable">
+          <option value="A">A - kursy średnie (główne waluty)</option>
+          <option value="B">B - kursy średnie (pozostałe)</option>
+        </select>
+      </div>
+
+      <div class="form-group form-actions">
+        <label>&nbsp;</label>
+        <button
+          class="btn btn-success"
+          (click)="submitFetch()"
+          [disabled]="!isFetchValid() || loading">
+          <span *ngIf="loading" class="spinner"></span>
+          {{ loading ? 'Pobieranie...' : '⬇️ Pobierz i zapisz' }}
+        </button>
+      </div>
+    </div>
+
+    <div *ngIf="fetchDateFrom && fetchDateTo && fetchDateFrom > fetchDateTo" class="alert alert-error">
+      Data początkowa musi być wcześniejsza niż końcowa
+    </div>
+  </div>
+
+  <!-- FILTRY WYŚWIETLANIA -->
+  <div class="filter-form">
+    <div class="form-group">
+      <label for="currency">Waluta</label>
+      <select
+        id="currency"
+        class="form-control"
+        [(ngModel)]="selectedCurrency">
+        <option value="">Wszystkie waluty</option>
+        <option
+          *ngFor="let currency of availableCurrencies"
+          [value]="currency.code">
+          {{ currency.code }} - {{ currency.name }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="dateFrom">Data od</label>
+      <input
+        type="date"
+        id="dateFrom"
+        class="form-control"
+        [(ngModel)]="dateFrom">
+    </div>
+
+    <div class="form-group">
+      <label for="dateTo">Data do</label>
+      <input
+        type="date"
+        id="dateTo"
+        class="form-control"
+        [(ngModel)]="dateTo">
+    </div>
+
+    <div class="form-group">
+      <label for="groupBy">Grupowanie</label>
+      <select
+        id="groupBy"
+        class="form-control"
+        [(ngModel)]="groupBy">
+        <option
+          *ngFor="let option of groupByOptions"
+          [value]="option.value">
+          {{ option.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="form-group form-actions">
+      <label>&nbsp;</label>
+      <div class="button-group">
+        <button
+          class="btn btn-primary"
+          (click)="applyFilters()">
+          🔍 Filtruj
+        </button>
+        <button
+          *ngIf="hasActiveFilters()"
+          class="btn btn-secondary"
+          (click)="resetFilters()">
+          ✕ Resetuj
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
